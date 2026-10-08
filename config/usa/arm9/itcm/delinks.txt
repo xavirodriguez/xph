@@ -37,6 +37,9 @@ libs/nds/src/itcm/Mat4x3p_ScaleColumns.c:
 libs/nds/src/itcm/Mat4x3p_InitXRotation.c:
     .text       start:0x01ff8a80 end:0x01ff8aa0
 
+libs/nds/src/itcm/Mat4x3p_InitYRotation.c:
+    .text       start:0x01ff8aa0 end:0x01ff8abc
+
 libs/nds/src/itcm/Mat4p_InitIdentity.c:
     .text       start:0x01ff91f8 end:0x01ff9224
 
