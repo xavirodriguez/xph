@@ -96,7 +96,7 @@ libs/nds/src/heap.c:
     .bss        start:0x0205ade4 end:0x0205adf4
 
 libs/nds/src/overlay.cpp:
-    .text       start:0x02042584 end:0x0204268c
+    .text       start:0x020424d4 end:0x0204268c
 
 libs/nds/src/overlay_wait.c:
     .text       start:0x02042ad8 end:0x02042af0
