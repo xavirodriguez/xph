@@ -28,8 +28,17 @@ libs/nds/src/itcm/Mat4x3p_InitIdentity.c:
 libs/nds/src/itcm/Mat4x3p_CopyToMat4p.c:
     .text       start:0x01ff8954 end:0x01ff8988
 
+libs/nds/src/itcm/Mat4x3p_InitScale.c:
+    .text       start:0x01ff8a34 end:0x01ff8a4a
+
 libs/nds/src/itcm/Mat4x3p_ScaleColumns.c:
     .text       start:0x01ff8a4c end:0x01ff8a80
+
+libs/nds/src/itcm/Mat4x3p_InitXRotation.c:
+    .text       start:0x01ff8a80 end:0x01ff8aa0
+
+libs/nds/src/itcm/Mat4x3p_InitYRotation.c:
+    .text       start:0x01ff8aa0 end:0x01ff8abc
 
 libs/nds/src/itcm/Mat4p_InitIdentity.c:
     .text       start:0x01ff91f8 end:0x01ff9224
