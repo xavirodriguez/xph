@@ -25,23 +25,23 @@ ARM unk32 ActorBeedle::vfunc_d8(unk32 param1) {
 
     switch (*(u16 *)(param1 + 2)) {
         case 0x0F:
-            return HasFreebieCard();
+            return (s8)HasFreebieCard();
         case 0x13:
             if (selection >= 4) {
                 return 2;
             }
             UnkStruct_ov031_02183e80::GetInstance();
-            return func_ov031_0217bd88() == 0;
+            return (s8)(func_ov031_0217bd88() == 0);
         case 0x27:
             switch (selection) {
                 case 0:
                     return 0;
                 case 1:
-                    return sellerType == selection ? 2 : 1;
+                    return sellerType != selection ? 1 : 2;
                 case 2:
-                    return sellerType == selection ? 4 : 3;
+                    return sellerType != selection ? 3 : 4;
                 case 3:
-                    return sellerType == selection ? 6 : 5;
+                    return sellerType != selection ? 5 : 6;
                 case 4:
                     return 7;
             }
@@ -49,7 +49,7 @@ ARM unk32 ActorBeedle::vfunc_d8(unk32 param1) {
         case 0x2B:
             break;
         default:
-            return 0;
+            goto return_zero;
     }
 
     switch (data_027e0dbc.func_ov003_020f3d74(*(u16 *)(param1 + 2))) {
@@ -74,6 +74,9 @@ ARM unk32 ActorBeedle::vfunc_d8(unk32 param1) {
         default:
             return 0;
     }
+
+return_zero:
+    return 0;
 }
 unk32 ActorBeedle::vfunc_dc(unk32 param1) {}
 unk32 ActorBeedle::vfunc_e0(unk32 param1) {}
