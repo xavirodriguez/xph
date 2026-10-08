@@ -9,6 +9,12 @@ typedef struct OverlayLoadInfo {
     u32 unk28;
 } OverlayLoadInfo;
 
+typedef struct DestructorChain {
+    DestructorChain *next;
+    void (*dtor)(void *object);
+    void *object;
+} DestructorChain;
+
 extern "C" bool FS_LoadOverlayInfo(OverlayLoadInfo *info, Overlay *overlay, unk32 id);
 extern "C" bool FS_LoadOverlayFile(OverlayLoadInfo *info);
 extern "C" void FS_StartOverlay(OverlayLoadInfo *info);
@@ -38,6 +44,69 @@ extern "C" ARM void OS_RestoreInterrupts(u32 state);
 extern "C" THUMB bool func_02042afc(void);
 extern "C" THUMB void func_02042acc(void);
 extern "C" ARM u32 func_02042ad8(void);
+extern "C" DestructorChain *__global_destructor_chain;
+
+extern "C" THUMB void Overlay_RunGlobalDestructors(Overlay *overlay) {
+    while (true) {
+        DestructorChain *head = NULL;
+        DestructorChain *tail = NULL;
+        u32 start             = (u32) overlay->mBaseAddress;
+        u32 end               = start + (overlay->mTextSize + overlay->mBssSize);
+        u32 interruptState;
+        DestructorChain *prev;
+        DestructorChain *base;
+        DestructorChain *cur;
+
+        interruptState = OS_DisableInterrupts_Irq();
+        prev           = NULL;
+        base           = __global_destructor_chain;
+        cur            = base;
+
+        while (cur != NULL) {
+            DestructorChain *next = cur->next;
+            u32 dtor              = (u32) cur->dtor;
+            u32 object            = (u32) cur->object;
+
+            if ((object == 0 && dtor >= start && dtor < end) || (object >= start && object < end)) {
+                if (tail == NULL) {
+                    head = cur;
+                } else {
+                    tail->next = cur;
+                }
+                if (base == cur) {
+                    base = __global_destructor_chain = next;
+                }
+                tail      = cur;
+                cur->next = NULL;
+                if (prev != NULL) {
+                    prev->next = next;
+                }
+            } else {
+                prev = cur;
+            }
+            cur = next;
+        }
+
+        OS_RestoreInterrupts(interruptState);
+
+        if (head == NULL) {
+            return;
+        }
+
+        do {
+            DestructorChain *next = head->next;
+            if (head->dtor != NULL) {
+                head->dtor(head->object);
+            }
+            head = next;
+        } while (head != NULL);
+    }
+}
+
+extern "C" THUMB bool FS_StopOverlay(OverlayLoadInfo *info) {
+    Overlay_RunGlobalDestructors((Overlay *) info);
+    return true;
+}
 
 extern "C" THUMB bool FS_LoadOverlay(Overlay *overlay, unk32 id) {
     OverlayLoadInfo info;
