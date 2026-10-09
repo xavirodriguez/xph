@@ -12,7 +12,7 @@ void ActorBeedle::vfunc_c4() {}
 unk32 ActorBeedle::vfunc_114(unk32 param1) {}
 unk32 ActorBeedle::vfunc_d4() {}
 
-static unk32 func_ov031_02180e44(unk32 param1, unk32 param2) {}
+static unk32 func_ov031_02180e44(unk32 param1, unk32 param2) { return param2; }
 
 unk32 ActorBeedle::GetPromptMessage() {}
 unk32 ActorBeedle::GetPurchaseMessage() {}
