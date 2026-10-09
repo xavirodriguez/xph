@@ -15,7 +15,8 @@ public:
     /* 47c */ unk32 mUnk_47c;
     /* 480 */ bool mUnk_480;
     /* 481 */ PAD(0x481, 0x484);
-    /* 484 */
+    /* 484 */ unk32 mUnk_484;
+    /* 488 */
 
     /* 000 */ virtual ~ActorItemSellerBase() override;
     /* 008 */ virtual bool Init() override;
