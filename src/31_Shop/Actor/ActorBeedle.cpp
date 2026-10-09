@@ -1,4 +1,5 @@
 #include "Actor/ActorManager.hpp"
+#include "Actor/ActorShopItem.hpp"
 #include "Actor/Character/ActorItemSeller.hpp"
 #include "DTCM/UnkStruct_027e0ffc.hpp"
 #include "Unknown/UnkStruct_027e0dbc.hpp"
@@ -10,6 +11,8 @@ void func_ov003_020f3db0(UnkStruct_027e0dbc *);
 void *func_ov000_020c4588(void *);
 unk32 func_0201e388(void *, const char *);
 void func_02019570(void *, unk32, unk32);
+bool HasFreebieCard();
+bool func_ov031_0217bd88();
 }
 
 extern const ActorCharacter_1d8_230 data_ov031_02181ad4;
@@ -72,17 +75,17 @@ unk32 ActorBeedle::GetGoodbyeMessage() {}
 unk32 ActorBeedle::GetInventoryFullMessage() {}
 ARM unk32 ActorBeedle::vfunc_d8(unk32 param1) {
     unk32 sellerType = func_ov031_021812e4(mUnk_484);
-    unk32 selection = func_ov031_021812e4(data_027e0dbc.GetUnk_24()->mUnk_0b);
+    unk32 selection  = func_ov031_021812e4(data_027e0dbc.GetUnk_24()->mUnk_0b);
 
-    switch (*(u16 *)(param1 + 2)) {
+    switch (*(u16 *) (param1 + 2)) {
         case 0x0F:
-            return (s8)HasFreebieCard();
+            return (s8) HasFreebieCard();
         case 0x13:
             if (selection >= 4) {
                 return 2;
             }
             UnkStruct_ov031_02183e80::GetInstance();
-            return (s8)(func_ov031_0217bd88() == 0);
+            return (s8) (func_ov031_0217bd88() == 0);
         case 0x27:
             switch (selection) {
                 case 0:
@@ -103,7 +106,7 @@ ARM unk32 ActorBeedle::vfunc_d8(unk32 param1) {
             goto return_zero;
     }
 
-    switch (data_027e0dbc.func_ov003_020f3d74(*(u16 *)(param1 + 2))) {
+    switch (data_027e0dbc.func_ov003_020f3d74(*(u16 *) (param1 + 2))) {
         case 0:
             return 8;
         case 1:
