@@ -58,8 +58,18 @@ void ActorBeedle::vfunc_c4() {
         data_027e0ffc.func_ov000_020ceacc(0x427, &mPos, 0);
     }
 }
+static unk32 func_ov031_02180e44(unk32 param1, unk32 param2);
 unk32 ActorBeedle::vfunc_114(unk32 param1) {}
-unk32 ActorBeedle::vfunc_d4() {}
+unk32 ActorBeedle::vfunc_d4() {
+    if (mUnk_474 == 4 || mUnk_474 == 6) {
+        return func_ov031_02180e44(6, 10);
+    }
+    if (mUnk_470 == 1) {
+        return func_ov031_02180e44(6, 11);
+    }
+    *((unk32 *) ((u8 *) this + 0x484)) = data_027e0dbc.GetUnk_24()->mUnk_0b;
+    return func_ov031_02180e44(6, 6);
+}
 
 static unk32 func_ov031_02180e44(unk32 param1, unk32 param2) {
     return (param1 << 16) | param2;
@@ -67,7 +77,9 @@ static unk32 func_ov031_02180e44(unk32 param1, unk32 param2) {
 
 unk32 ActorBeedle::GetPromptMessage() {}
 unk32 ActorBeedle::GetPurchaseMessage() {}
-unk32 ActorBeedle::GetNotEnoughMoneyMessage() {}
+unk32 ActorBeedle::GetNotEnoughMoneyMessage() {
+    return mUnk_470 == 1 ? 0x110097 : 0x110115;
+}
 unk32 ActorBeedle::GetGoodbyeMessage() {}
 unk32 ActorBeedle::GetInventoryFullMessage() {}
 unk32 ActorBeedle::vfunc_d8(unk32 param1) {}
@@ -81,9 +93,31 @@ void ActorBeedle::vfunc_108() {
 void ActorBeedle::vfunc_10c(bool param1) {}
 void ActorBeedle::vfunc_110() {}
 
-unk32 ActorBeedle::func_ov031_021812e4(unk32 param1) {}
+unk32 ActorBeedle::func_ov031_021812e4(unk32 param1) {
+    if (param1 < 0) {
+        param1 = *((unk32 *) ((u8 *) ActorItemSellerBase::GetCurrentSeller() + 0x484));
+    }
+    if (param1 < 0x14) {
+        return 0;
+    }
+    if (param1 < 0x32) {
+        return 1;
+    }
+    if (param1 < 0x64) {
+        return 2;
+    }
+    return param1 < 0xc8 ? 3 : 4;
+}
 void ActorBeedle::func_ov031_0218132c(unk32 param1) {}
 
-bool ActorBeedle::vfunc_11c() {}
-bool ActorBeedle::vfunc_118() {}
+bool ActorBeedle::vfunc_11c() {
+    if (ActorItemSellerBase::GetCurrentSeller()->mUnk_470 != 0) {
+        return false;
+    }
+    return *((u32 *) ((u8 *) this + 0x484)) != data_027e0dbc.GetUnk_24()->mUnk_0b;
+}
+bool ActorBeedle::vfunc_118() {
+    *((u8 *) this + 0x490) = 0;
+    return data_027e0e28.func_ov018_02160a54(3);
+}
 ActorBeedle::~ActorBeedle() {}
