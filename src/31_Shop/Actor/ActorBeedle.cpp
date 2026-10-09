@@ -1,13 +1,69 @@
+#include "Actor/ActorManager.hpp"
 #include "Actor/Character/ActorItemSeller.hpp"
+#include "DTCM/UnkStruct_027e0ffc.hpp"
+#include "Unknown/UnkStruct_027e0dbc.hpp"
+
+extern "C" {
+s32 func_ov003_020f3d9c(UnkStruct_027e0dbc *);
+void func_ov003_020f3da4(UnkStruct_027e0dbc *);
+void func_ov003_020f3db0(UnkStruct_027e0dbc *);
+void *func_ov000_020c4588(void *);
+unk32 func_0201e388(void *, const char *);
+void func_02019570(void *, unk32, unk32);
+}
+
+extern const ActorCharacter_1d8_230 data_ov031_02181ad4;
+extern const unk32 data_ov031_02181ac8[];
+extern const unk32 data_ov031_02181abc[];
+extern const char data_ov031_02181b10[];
+extern unk32 data_027e0fec;
 
 ActorBeedle *ActorBeedle::Create() {}
 
-bool ActorBeedle::Init() {}
-void ActorBeedle::vfunc_c4() {}
+bool ActorBeedle::Init() {
+    mUnk_1d8.func_ov014_02145a74(0x9f, 0x9f);
+    mUnk_1d8.mUnk_230 = &data_ov031_02181ad4;
+
+    if (*((u8 *) gActorManager + 0x29) != 0) {
+        mUnk_470 = 1;
+        func_ov014_021451f0(data_ov031_02181ac8);
+        s32 value = func_ov003_020f3d9c(&data_027e0dbc);
+        if (value < 0) {
+            func_ov003_020f3db0(&data_027e0dbc);
+        } else if (value >= 9) {
+            func_ov003_020f3da4(&data_027e0dbc);
+        }
+    } else {
+        mUnk_470 = 0;
+        func_ov014_021451f0(data_ov031_02181abc);
+        void *model = func_ov000_020c4588((u8 *) data_027e0fec + 0x22c8);
+        unk32 index = func_0201e388((u8 *) model + *(u32 *) ((u8 *) model + 8) + 4, data_ov031_02181b10);
+        func_02019570(model, index, 0);
+    }
+
+    *((u32 *) ((u8 *) this + 0x484)) = data_027e0dbc.GetUnk_24()->mUnk_0b;
+    *((u8 *) this + 0x490)           = 0;
+    return ActorItemSellerBase::Init();
+}
+void ActorBeedle::vfunc_c4() {
+    ActorItemSellerBase::vfunc_c4();
+    if (!mUnk_1d8.UnkFunc1(4)) {
+        return;
+    }
+
+    UnkStruct_0202e1a0 state = mUnk_1d8.mUnk_10->mUnk_0c;
+    if (state.func_0202e310(0x5000) || state.func_0202e310(0x12000) || state.func_0202e310(0x1f000) ||
+        state.func_0202e310(0x2c000) || state.func_0202e310(0x39000) || state.func_0202e310(0x46000) ||
+        state.func_0202e310(0x53000)) {
+        data_027e0ffc.func_ov000_020ceacc(0x427, &mPos, 0);
+    }
+}
 unk32 ActorBeedle::vfunc_114(unk32 param1) {}
 unk32 ActorBeedle::vfunc_d4() {}
 
-static unk32 func_ov031_02180e44(unk32 param1, unk32 param2) {}
+static unk32 func_ov031_02180e44(unk32 param1, unk32 param2) {
+    return (param1 << 16) | param2;
+}
 
 unk32 ActorBeedle::GetPromptMessage() {}
 unk32 ActorBeedle::GetPurchaseMessage() {}
@@ -19,7 +75,9 @@ unk32 ActorBeedle::vfunc_dc(unk32 param1) {}
 unk32 ActorBeedle::vfunc_e0(unk32 param1) {}
 bool ActorBeedle::vfunc_70() {}
 bool ActorBeedle::vfunc_6c() {}
-void ActorBeedle::vfunc_108() {}
+void ActorBeedle::vfunc_108() {
+    this->vfunc_ec(3);
+}
 void ActorBeedle::vfunc_10c(bool param1) {}
 void ActorBeedle::vfunc_110() {}
 
